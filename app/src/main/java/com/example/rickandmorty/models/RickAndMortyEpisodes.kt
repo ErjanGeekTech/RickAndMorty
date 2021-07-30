@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 @Entity
-data class RickAndMortyCharacters(
+data class RickAndMortyEpisodes(
     @PrimaryKey
     @SerializedName("id")
     var id: Int,
@@ -12,9 +12,16 @@ data class RickAndMortyCharacters(
     @SerializedName("name")
     var name: String,
 
-    @SerializedName("status")
-    var status: String,
+    @SerializedName("air_date")
+    var airDate: String,
 
-    @SerializedName("image")
-    var image: String
+    @SerializedName("episode")
+    var episode: String,
+
+
+    @SerializedName("url")
+    var url: String,
+
+    @SerializedName("created")
+    var created: String
 )

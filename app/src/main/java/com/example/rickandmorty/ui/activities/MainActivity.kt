@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var navController: NavController
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -30,9 +31,14 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
          navController = navHostFragment.navController
 
-        appBarConfiguration = AppBarConfiguration.Builder(navController.graph).build()
+        appBarConfiguration = AppBarConfiguration.Builder(
+            R.id.characterFragment,
+            R.id.episodesFragment,
+            R.id.locationsFragment
+        ).build()
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+        NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {

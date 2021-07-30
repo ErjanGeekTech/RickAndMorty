@@ -10,12 +10,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterViewModel
-@Inject constructor(val repository: RickAndMortyRepository)
-    : ViewModel() {
+@Inject
+constructor(val repository: RickAndMortyRepository) : ViewModel() {
 
 
-    fun fetchCharacters():MutableLiveData<RickAndMortyResponse<RickAndMortyCharacters>>{
+    fun fetchCharacters(): MutableLiveData<RickAndMortyResponse<RickAndMortyCharacters>> {
         return repository.fetchCharacters()
     }
+
+    fun getCharacters(): List<RickAndMortyCharacters> {
+        return repository.getCharacters()
+    }
+
+
 
 }

@@ -2,9 +2,11 @@ package com.example.rickandmorty.ui.fragments.characters
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentCharacterBinding
@@ -12,16 +14,17 @@ import com.example.rickandmorty.ui.adapters.CharacterAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewModel>() {
-
+class CharacterFragment :
+    BaseFragment<FragmentCharacterBinding, CharacterViewModel>() {
     val adapter: CharacterAdapter = CharacterAdapter()
+    override val viewModel: CharacterViewModel by viewModels<CharacterViewModel>()
+
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ) = FragmentCharacterBinding.inflate(inflater, container, false)
 
-    override fun getViewModel() = CharacterViewModel::class.java
 
     override fun setupRequests() {
         super.setupRequests()
@@ -31,6 +34,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
     override fun setupViews() {
         super.setupViews()
         setupRecycler()
+
     }
 
     private fun setupRecycler() {
@@ -39,13 +43,16 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
     }
 
     private fun fetchCharacters() {
-        if (verifyAvailableNetwork()){
-            viewModel.fetchCharacters().observe(viewLifecycleOwner, {rickAndMortyResponse->
-//                binding.progressCircular.setVisibility(View.INVISIBLE)
+        if (verifyAvailableNetwork()) {
+            viewModel.fetchCharacters().observe(viewLifecycleOwner, { rickAndMortyResponse ->
+                binding.progressCircular.visibility = View.INVISIBLE
                 if (rickAndMortyResponse != null) {
-                        adapter.addList(rickAndMortyResponse.results)
-                    }
+                    adapter.addList(rickAndMortyResponse.results)
+                }
             })
+        } else {
+            binding.progressCircular.visibility = View.INVISIBLE
+            adapter.addList(viewModel.getCharacters())
         }
     }
 
@@ -56,5 +63,20 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
         return netInfo != null && netInfo.isConnected
     }
 
+    override fun setupListener() {
+        super.setupListener()
+        onItemClick()
+    }
+
+    private fun onItemClick() {
+        adapter.onItemClick = { id, v ->
+            val action =
+                CharacterFragmentDirections.actionCharacterFragmentToDescriptionFragment(id)
+            Navigation.findNavController(v).navigate(action)
+        }
+    }
+
 
 }
+
+

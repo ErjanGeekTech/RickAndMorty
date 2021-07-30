@@ -13,6 +13,6 @@ data class Info(
     private val next: String,
 
     @SerializedName("prev")
-    private val prev: Any,
+    private val prev: Any
 
     )
