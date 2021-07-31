@@ -40,7 +40,6 @@ class CharacterAdapter(
 
     class CharacterViewHolder(
         private val binding: ItemCharacterBinding
-//    , val click: Click
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(rickAndMortyCharacters: RickAndMortyCharacters) {
             Glide
@@ -48,9 +47,6 @@ class CharacterAdapter(
                 .load(rickAndMortyCharacters.image)
                 .into(binding.imageItemCharacter)
             binding.textItemCharacter.text = rickAndMortyCharacters.name
-//            itemView.setOnClickListener(v ->{
-//                click.onItemClick(rickAndMortyCharacters.id, )
-//            })
         }
 
     }
