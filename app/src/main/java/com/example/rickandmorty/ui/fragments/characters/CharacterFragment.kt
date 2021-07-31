@@ -17,14 +17,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class CharacterFragment :
     BaseFragment<FragmentCharacterBinding, CharacterViewModel>() {
     val adapter: CharacterAdapter = CharacterAdapter()
-    override val viewModel: CharacterViewModel by viewModels<CharacterViewModel>()
+    override val viewModel: CharacterViewModel by viewModels()
 
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ) = FragmentCharacterBinding.inflate(inflater, container, false)
-
 
     override fun setupRequests() {
         super.setupRequests()

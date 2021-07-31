@@ -22,6 +22,8 @@ constructor(val repository: RickAndMortyRepository) : ViewModel() {
         return repository.getCharacters()
     }
 
-
+    fun getCharacter(id: Int? = null): MutableLiveData<RickAndMortyCharacters> {
+        return repository.getCharacterId(id)
+    }
 
 }

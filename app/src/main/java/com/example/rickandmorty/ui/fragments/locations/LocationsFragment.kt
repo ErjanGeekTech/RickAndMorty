@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LocationsFragment : BaseFragment<FragmentLocationsBinding, LocationsViewModel>() {
-    override val viewModel: LocationsViewModel by viewModels<LocationsViewModel>()
+    override val viewModel: LocationsViewModel by viewModels()
     val adapter: LocationAdapter = LocationAdapter()
 
     override fun getFragmentBinding(

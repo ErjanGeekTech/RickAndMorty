@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class EpisodesFragment : BaseFragment<FragmentEpisodesBinding, EpisodesViewModel>() {
-    override val viewModel: EpisodesViewModel by viewModels<EpisodesViewModel>()
+    override val viewModel: EpisodesViewModel by viewModels()
     val adapter: EpisodeAdapter = EpisodeAdapter()
 
     override fun getFragmentBinding(

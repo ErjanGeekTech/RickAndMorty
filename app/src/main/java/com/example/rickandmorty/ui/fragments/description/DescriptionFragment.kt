@@ -9,13 +9,13 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentDescriptionBinding
+import com.example.rickandmorty.ui.fragments.characters.CharacterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DescriptionFragment : BaseFragment<FragmentDescriptionBinding, DescriptionViewModel>() {
-    override val viewModel: DescriptionViewModel by viewModels<DescriptionViewModel>()
+class DescriptionFragment : BaseFragment<FragmentDescriptionBinding, CharacterViewModel>() {
+    override val viewModel: CharacterViewModel by viewModels()
     val args: DescriptionFragmentArgs by navArgs()
-
      var id: Int? = null
 
     override fun getFragmentBinding(
