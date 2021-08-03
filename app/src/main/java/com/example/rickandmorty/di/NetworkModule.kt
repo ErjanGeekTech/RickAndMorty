@@ -1,7 +1,9 @@
 package com.example.rickandmorty.di
 
 import com.example.rickandmorty.data.network.RetrofitClient
-import com.example.rickandmorty.data.network.apiservice.RickAndMortyApiService
+import com.example.rickandmorty.data.network.apiservice.CharacterApiService
+import com.example.rickandmorty.data.network.apiservice.EpisodeApiService
+import com.example.rickandmorty.data.network.apiservice.LocationApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,8 +16,20 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideCharacterApiService(): RickAndMortyApiService {
-        return RetrofitClient().provideRickAndMortyApiService()
+    fun provideCharacterApiService(): CharacterApiService {
+        return RetrofitClient().provideCharacterApiService()
+    }
+
+    @Singleton
+    @Provides
+    fun provideEpisodeApiService(): EpisodeApiService {
+        return RetrofitClient().provideEpisodeApiService()
+    }
+
+    @Singleton
+    @Provides
+    fun provideLocationApiService(): LocationApiService {
+        return RetrofitClient().provideLocationApiService()
     }
 
 }

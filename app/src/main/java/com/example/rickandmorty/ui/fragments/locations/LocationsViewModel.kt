@@ -1,23 +1,17 @@
 package com.example.rickandmorty.ui.fragments.locations
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.rickandmorty.data.repositories.RickAndMortyRepository
-import com.example.rickandmorty.models.RickAndMortyLocations
-import com.example.rickandmorty.models.RickAndMortyResponse
+import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
+import com.example.rickandmorty.data.repositories.LocationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class LocationsViewModel
-@Inject constructor(val repository: RickAndMortyRepository) : ViewModel() {
+@Inject constructor(val repository: LocationRepository) : ViewModel() {
 
-    fun fetchLocations(): MutableLiveData<RickAndMortyResponse<RickAndMortyLocations>> {
-        return repository.fetchLocations()
-    }
+    fun fetchLocations() = repository.fetchLocation().cachedIn(viewModelScope)
 
-    fun getLocations(): List<RickAndMortyLocations> {
-        return repository.getLocations()
-    }
 
 }

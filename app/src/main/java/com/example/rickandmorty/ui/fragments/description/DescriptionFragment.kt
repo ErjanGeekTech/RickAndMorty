@@ -4,24 +4,28 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
+import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentDescriptionBinding
 import com.example.rickandmorty.ui.fragments.characters.CharacterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DescriptionFragment : BaseFragment<FragmentDescriptionBinding, CharacterViewModel>() {
-    override val viewModel: CharacterViewModel by viewModels()
+class DescriptionFragment : BaseFragment<FragmentDescriptionBinding, CharacterViewModel>(
+    R.layout.fragment_description
+) {
+    override val viewModel: CharacterViewModel by activityViewModels()
     val args: DescriptionFragmentArgs by navArgs()
-     var id: Int? = null
+    override val binding by viewBinding(FragmentDescriptionBinding::bind)
 
-    override fun getFragmentBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
-    ) = FragmentDescriptionBinding.inflate(inflater, container, false)
+    var id: Int? = null
+
+
 
     override fun initialize() {
         super.initialize()
@@ -29,7 +33,7 @@ class DescriptionFragment : BaseFragment<FragmentDescriptionBinding, CharacterVi
     }
 
     private fun getIdCharacter() {
-         id = args.getIdCharacter
+        id = args.getIdCharacter
     }
 
     override fun setupRequests() {
@@ -51,6 +55,8 @@ class DescriptionFragment : BaseFragment<FragmentDescriptionBinding, CharacterVi
         val netInfo = connectivityManager.activeNetworkInfo
         return netInfo != null && netInfo.isConnected
     }
+
+
 
 
 }

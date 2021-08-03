@@ -3,24 +3,28 @@ package com.example.rickandmorty.ui.fragments.episodes
 import android.content.Context
 import android.net.ConnectivityManager
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentEpisodesBinding
 import com.example.rickandmorty.ui.adapters.EpisodeAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class EpisodesFragment : BaseFragment<FragmentEpisodesBinding, EpisodesViewModel>() {
+class EpisodesFragment : BaseFragment<FragmentEpisodesBinding, EpisodesViewModel>(
+    R.layout.fragment_episodes
+) {
     override val viewModel: EpisodesViewModel by viewModels()
     val adapter: EpisodeAdapter = EpisodeAdapter()
+    override val binding by viewBinding(FragmentEpisodesBinding::bind)
 
-    override fun getFragmentBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
-    ) = FragmentEpisodesBinding.inflate(inflater, container, false)
+
 
     override fun setupRequests() {
         super.setupRequests()
@@ -29,15 +33,11 @@ class EpisodesFragment : BaseFragment<FragmentEpisodesBinding, EpisodesViewModel
 
     private fun fetchLocations() {
         if (verifyAvailableNetwork()) {
-            viewModel.fetchEpisodes().observe(viewLifecycleOwner, { rickAndMortyEpisodes ->
-                binding.progressCircular.setVisibility(View.INVISIBLE)
-                if (rickAndMortyEpisodes != null) {
-                    adapter.addList(rickAndMortyEpisodes.results)
+            lifecycleScope.launch {
+                viewModel.fetchEpisodes().collectLatest {
+                    adapter.submitData(it)
                 }
-            })
-        } else {
-            adapter.addList(viewModel.getEpisodes())
-            binding.progressCircular.setVisibility(View.INVISIBLE)
+            }
         }
     }
 
@@ -57,4 +57,6 @@ class EpisodesFragment : BaseFragment<FragmentEpisodesBinding, EpisodesViewModel
         binding.rv.layoutManager = LinearLayoutManager(context)
         binding.rv.adapter = adapter
     }
+
+
 }

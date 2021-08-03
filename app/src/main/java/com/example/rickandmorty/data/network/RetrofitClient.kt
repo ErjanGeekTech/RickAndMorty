@@ -1,6 +1,8 @@
 package com.example.rickandmorty.data.network
 
-import com.example.rickandmorty.data.network.apiservice.RickAndMortyApiService
+import com.example.rickandmorty.data.network.apiservice.CharacterApiService
+import com.example.rickandmorty.data.network.apiservice.EpisodeApiService
+import com.example.rickandmorty.data.network.apiservice.LocationApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,7 +19,7 @@ class RetrofitClient {
         .writeTimeout(30, TimeUnit.SECONDS)
         .build()
 
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor{
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     }
 
@@ -27,7 +29,15 @@ class RetrofitClient {
         .client(okHttpClient)
         .build()
 
-    fun provideRickAndMortyApiService():RickAndMortyApiService{
-        return retrofit.create(RickAndMortyApiService::class.java)
+    fun provideCharacterApiService(): CharacterApiService {
+        return retrofit.create(CharacterApiService::class.java)
+    }
+
+    fun provideEpisodeApiService(): EpisodeApiService {
+        return retrofit.create(EpisodeApiService::class.java)
+    }
+
+    fun provideLocationApiService(): LocationApiService {
+        return retrofit.create(LocationApiService::class.java)
     }
 }

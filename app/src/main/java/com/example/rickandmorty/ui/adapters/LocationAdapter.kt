@@ -2,19 +2,19 @@ package com.example.rickandmorty.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty.databinding.ItemLocationBinding
 import com.example.rickandmorty.models.RickAndMortyLocations
 
-class LocationAdapter : RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
+class LocationAdapter :
+    PagingDataAdapter<RickAndMortyLocations, LocationAdapter.LocationViewHolder>(
+        differCallback
+    ) {
 
-    var list: List<RickAndMortyLocations> = ArrayList()
     lateinit var binding: ItemLocationBinding
 
-    fun addList(getList: List<RickAndMortyLocations>) {
-        list = getList
-        notifyDataSetChanged()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
         binding = ItemLocationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,15 +22,13 @@ class LocationAdapter : RecyclerView.Adapter<LocationAdapter.LocationViewHolder>
     }
 
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
-        holder.onBind(list[position])
+        getItem(position)?.let { holder.onBind(it) }
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
 
     class LocationViewHolder(val binding: ItemLocationBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun onBind(rickAndMortyLocations: RickAndMortyLocations) {
             binding.txtNameLocation.text = rickAndMortyLocations.name
             binding.typeLocationTxt.text = rickAndMortyLocations.type
@@ -38,5 +36,24 @@ class LocationAdapter : RecyclerView.Adapter<LocationAdapter.LocationViewHolder>
             binding.txtCreatedLocation.text = rickAndMortyLocations.created
         }
 
+    }
+
+    companion object {
+        val differCallback = object : DiffUtil.ItemCallback<RickAndMortyLocations>() {
+            override fun areItemsTheSame(
+                oldItem: RickAndMortyLocations,
+                newItem: RickAndMortyLocations
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: RickAndMortyLocations,
+                newItem: RickAndMortyLocations
+            ): Boolean {
+                return oldItem == newItem
+            }
+
+        }
     }
 }

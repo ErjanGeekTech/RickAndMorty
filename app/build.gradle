@@ -76,7 +76,7 @@ dependencies {
 
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    kapt 'com.github.bumptech.glide:compiler:4.12.0'
 
     //OkHttp
     implementation "com.squareup.okhttp3:okhttp-bom:4.9.0"
@@ -109,7 +109,13 @@ dependencies {
     //Paging
     def paging_version = "3.0.0"
 
-    implementation "androidx.paging:paging-runtime:$paging_version"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
+
+    def view_binding_property_delegate = '1.4.6'
+
+    // To use only without reflection variants of viewBinding
+    implementation "com.github.kirich1409:viewbindingpropertydelegate-noreflection:$view_binding_property_delegate"
 
 
 
