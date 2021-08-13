@@ -1,4 +1,4 @@
-package com.example.rickandmorty.ui.activities
+package com.example.rickandmorty.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,14 +8,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.rickandmorty.R
 import com.example.rickandmorty.databinding.ActivityMainBinding
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    lateinit var appBarConfiguration: AppBarConfiguration
-    lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var navController: NavController
 
 
 
@@ -41,8 +39,8 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return (NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp())
-    }
+        override fun onSupportNavigateUp(): Boolean {
+            return (NavigationUI.navigateUp(navController, appBarConfiguration)
+                    || super.onSupportNavigateUp())
+        }
 }

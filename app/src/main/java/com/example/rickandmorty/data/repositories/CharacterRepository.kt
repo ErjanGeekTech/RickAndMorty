@@ -4,23 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.rickandmorty.data.db.daos.CharactersDao
-import com.example.rickandmorty.data.db.daos.EpisodesDao
-import com.example.rickandmorty.data.db.daos.LocationDao
 import com.example.rickandmorty.data.network.apiservice.CharacterApiService
 import com.example.rickandmorty.data.repositories.pagingSource.CharacterPagingSource
 import com.example.rickandmorty.models.RickAndMortyCharacters
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
 import retrofit2.Response
-import javax.inject.Inject
 
-class CharacterRepository
-@Inject constructor(
-    var service: CharacterApiService,
-    var charactersDao: CharactersDao,
-    var episodesDao: EpisodesDao, var locationDao: LocationDao
-) {
+class CharacterRepository constructor(var service: CharacterApiService) {
 
     fun fetchCharacters(): Flow<PagingData<RickAndMortyCharacters>> {
         return Pager(config = PagingConfig(

@@ -7,9 +7,8 @@ import com.example.rickandmorty.data.network.apiservice.EpisodeApiService
 import com.example.rickandmorty.data.repositories.pagingSource.EpisodePagingSource
 import com.example.rickandmorty.models.RickAndMortyEpisodes
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class EpisodeRepository @Inject constructor(val service: EpisodeApiService) {
+class EpisodeRepository constructor(val service: EpisodeApiService) {
 
     fun fetchEpisodes(): Flow<PagingData<RickAndMortyEpisodes>> {
         return Pager(config =

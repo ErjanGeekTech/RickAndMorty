@@ -7,9 +7,8 @@ import com.example.rickandmorty.data.network.apiservice.LocationApiService
 import com.example.rickandmorty.data.repositories.pagingSource.LocationPagingSource
 import com.example.rickandmorty.models.RickAndMortyLocations
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-class LocationRepository @Inject constructor(val service: LocationApiService) {
+class LocationRepository constructor(val service: LocationApiService) {
 
     fun fetchLocation(): Flow<PagingData<RickAndMortyLocations>> {
         return Pager(config = PagingConfig(

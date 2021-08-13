@@ -20,6 +20,8 @@ interface CharacterApiService {
         @Path("id") id: Int? = null
     ): Call<RickAndMortyCharacters>
 
+    
+
 
 
 

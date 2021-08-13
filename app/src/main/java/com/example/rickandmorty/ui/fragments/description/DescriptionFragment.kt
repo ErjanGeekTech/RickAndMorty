@@ -13,33 +13,20 @@ import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentDescriptionBinding
 import com.example.rickandmorty.ui.fragments.characters.CharacterViewModel
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-@AndroidEntryPoint
 class DescriptionFragment : BaseFragment<FragmentDescriptionBinding, CharacterViewModel>(
     R.layout.fragment_description
 ) {
-    override val viewModel: CharacterViewModel by activityViewModels()
+    override val viewModel: CharacterViewModel by sharedViewModel()
     val args: DescriptionFragmentArgs by navArgs()
     override val binding by viewBinding(FragmentDescriptionBinding::bind)
 
-    var id: Int? = null
-
-
-
-    override fun initialize() {
-        super.initialize()
-        getIdCharacter()
-    }
-
-    private fun getIdCharacter() {
-        id = args.getIdCharacter
-    }
 
     override fun setupRequests() {
         super.setupRequests()
         if (verifyAvailableNetwork()) {
-            viewModel.getCharacter(id).observe(viewLifecycleOwner, { character ->
+            viewModel.getCharacter(args.getIdCharacter).observe(viewLifecycleOwner, { character ->
                 Glide.with(binding.imageDescription)
                     .load(character.image)
                     .into(binding.imageDescription)

@@ -1,35 +1,41 @@
 package com.example.rickandmorty.di
 
 import com.example.rickandmorty.data.network.RetrofitClient
-import com.example.rickandmorty.data.network.apiservice.CharacterApiService
-import com.example.rickandmorty.data.network.apiservice.EpisodeApiService
-import com.example.rickandmorty.data.network.apiservice.LocationApiService
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object NetworkModule {
 
-    @Singleton
-    @Provides
-    fun provideCharacterApiService(): CharacterApiService {
-        return RetrofitClient().provideCharacterApiService()
-    }
+val NetworkModule = module {
 
-    @Singleton
-    @Provides
-    fun provideEpisodeApiService(): EpisodeApiService {
-        return RetrofitClient().provideEpisodeApiService()
-    }
-
-    @Singleton
-    @Provides
-    fun provideLocationApiService(): LocationApiService {
-        return RetrofitClient().provideLocationApiService()
-    }
+    single { RetrofitClient().retrofit }
+    single { RetrofitClient().provideHttpLoggingInterceptor() }
+    single { RetrofitClient().provideCharacterApiService() }
+    single { RetrofitClient().provideEpisodeApiService() }
+    single { RetrofitClient().provideLocationApiService() }
 
 }
+//@Module
+//@InstallIn(SingletonComponent::class)
+//object NetworkModule {
+//
+//    @Singleton
+//    val retrofitClient: RetrofitClient = RetrofitClient()
+//
+//    @Singleton
+//    @Provides
+//    fun provideCharacterApiService(): CharacterApiService {
+//        return retrofitClient.provideCharacterApiService()
+//    }
+//
+//    @Singleton
+//    @Provides
+//    fun provideEpisodeApiService(): EpisodeApiService {
+//        return retrofitClient.provideEpisodeApiService()
+//    }
+//
+//    @Singleton
+//    @Provides
+//    fun provideLocationApiService(): LocationApiService {
+//        return retrofitClient.provideLocationApiService()
+//    }
+
+//}

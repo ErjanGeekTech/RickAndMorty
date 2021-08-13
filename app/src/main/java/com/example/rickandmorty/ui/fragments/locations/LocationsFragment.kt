@@ -2,8 +2,6 @@ package com.example.rickandmorty.ui.fragments.locations
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,16 +10,15 @@ import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentLocationsBinding
 import com.example.rickandmorty.ui.adapters.LocationAdapter
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class LocationsFragment : BaseFragment<FragmentLocationsBinding, LocationsViewModel>(
     R.layout.fragment_locations
 ) {
-    override val viewModel: LocationsViewModel by viewModels()
-    val adapter: LocationAdapter = LocationAdapter()
+    override val viewModel: LocationsViewModel by viewModel()
+    val locationAdapter: LocationAdapter = LocationAdapter()
     override val binding by viewBinding(FragmentLocationsBinding::bind)
 
 
@@ -35,7 +32,7 @@ class LocationsFragment : BaseFragment<FragmentLocationsBinding, LocationsViewMo
         if (verifyAvailableNetwork()) {
             lifecycleScope.launch {
                 viewModel.fetchLocations().collectLatest {
-                    adapter.submitData(it)
+                    locationAdapter.submitData(it)
                 }
             }
         }
@@ -54,8 +51,12 @@ class LocationsFragment : BaseFragment<FragmentLocationsBinding, LocationsViewMo
     }
 
     private fun setupRecycler() {
+        binding.rv.apply{
+            layoutManager = LinearLayoutManager(context)
+            adapter = locationAdapter
+        }
         binding.rv.layoutManager = LinearLayoutManager(context)
-        binding.rv.adapter = adapter
+        binding.rv.adapter = locationAdapter
     }
 
 

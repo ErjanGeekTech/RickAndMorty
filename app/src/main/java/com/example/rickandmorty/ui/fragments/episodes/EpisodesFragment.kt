@@ -2,8 +2,6 @@ package com.example.rickandmorty.ui.fragments.episodes
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,16 +10,15 @@ import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentEpisodesBinding
 import com.example.rickandmorty.ui.adapters.EpisodeAdapter
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
 class EpisodesFragment : BaseFragment<FragmentEpisodesBinding, EpisodesViewModel>(
     R.layout.fragment_episodes
 ) {
-    override val viewModel: EpisodesViewModel by viewModels()
-    val adapter: EpisodeAdapter = EpisodeAdapter()
+    override val viewModel: EpisodesViewModel by viewModel()
+    val episodeAdapter: EpisodeAdapter = EpisodeAdapter()
     override val binding by viewBinding(FragmentEpisodesBinding::bind)
 
 
@@ -35,7 +32,7 @@ class EpisodesFragment : BaseFragment<FragmentEpisodesBinding, EpisodesViewModel
         if (verifyAvailableNetwork()) {
             lifecycleScope.launch {
                 viewModel.fetchEpisodes().collectLatest {
-                    adapter.submitData(it)
+                    episodeAdapter.submitData(it)
                 }
             }
         }
@@ -54,8 +51,12 @@ class EpisodesFragment : BaseFragment<FragmentEpisodesBinding, EpisodesViewModel
     }
 
     private fun setupRecycler() {
+        binding.rv.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = episodeAdapter
+        }
         binding.rv.layoutManager = LinearLayoutManager(context)
-        binding.rv.adapter = adapter
+        binding.rv.adapter = episodeAdapter
     }
 
 

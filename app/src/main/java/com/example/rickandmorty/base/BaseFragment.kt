@@ -9,16 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseFragment<B : ViewBinding, V : ViewModel>(
+abstract class BaseFragment<B :  ViewBinding, V : ViewModel>(
     @LayoutRes layoutId: Int
 ) : Fragment(layoutId) {
 
     protected abstract val binding: B
     protected abstract val viewModel: V
 
-
-//    abstract fun getFragmentBinding(inflater: LayoutInflater, container: ViewGroup?): B
-//    abstract fun getViewModel(): Class<V>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,9 +26,7 @@ abstract class BaseFragment<B : ViewBinding, V : ViewModel>(
         setupViews()
     }
 
-    open fun setupViews() {
-
-    }
+    open fun setupViews() {}
 
     open fun setupObserve() {}
 

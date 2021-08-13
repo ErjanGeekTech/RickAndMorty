@@ -2,10 +2,7 @@ package com.example.rickandmorty.ui.fragments.characters
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,25 +11,25 @@ import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
 import com.example.rickandmorty.databinding.FragmentCharacterBinding
 import com.example.rickandmorty.ui.adapters.CharacterAdapter
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-@AndroidEntryPoint
 class CharacterFragment :
     BaseFragment<FragmentCharacterBinding, CharacterViewModel>(
         R.layout.fragment_character
     ) {
-    val adapter: CharacterAdapter = CharacterAdapter(this::onItemClick)
-    override val viewModel: CharacterViewModel by activityViewModels()
+    private val characterAdapter: CharacterAdapter = CharacterAdapter(this::onItemClick)
+     override val viewModel: CharacterViewModel by sharedViewModel()
     override val binding by viewBinding(FragmentCharacterBinding::bind)
-
 
 
     override fun setupRequests() {
         super.setupRequests()
         fetchCharacters()
     }
+
+
 
     override fun setupViews() {
         super.setupViews()
@@ -41,16 +38,18 @@ class CharacterFragment :
     }
 
     private fun setupRecycler() {
-        binding.rv.layoutManager = LinearLayoutManager(context)
-        binding.rv.adapter = adapter
+        binding.rv.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = characterAdapter
+        }
+
     }
 
     private fun fetchCharacters() {
         if (verifyAvailableNetwork()) {
-
             lifecycleScope.launch {
                 viewModel.fetchCharacters().collectLatest {
-                    adapter.submitData(it)
+                    characterAdapter.submitData(it)
                 }
             }
         }
@@ -69,8 +68,6 @@ class CharacterFragment :
             CharacterFragmentDirections.actionCharacterFragmentToDescriptionFragment(id)
         )
     }
-
-
 
 
 }

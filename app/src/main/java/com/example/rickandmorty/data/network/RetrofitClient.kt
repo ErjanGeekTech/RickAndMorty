@@ -19,11 +19,9 @@ class RetrofitClient {
         .writeTimeout(30, TimeUnit.SECONDS)
         .build()
 
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-    }
+    fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
-    private val retrofit = Retrofit.Builder()
+    val retrofit = Retrofit.Builder()
         .baseUrl("https://rickandmortyapi.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
