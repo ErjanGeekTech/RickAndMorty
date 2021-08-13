@@ -9,5 +9,4 @@ class EpisodesViewModel constructor(val repository: EpisodeRepository) : ViewMod
 
     fun fetchEpisodes() = repository.fetchEpisodes().cachedIn(viewModelScope)
 
-
 }
