@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
 import retrofit2.Response
 
-class CharacterRepository constructor(var service: CharacterApiService) {
+class CharacterRepository constructor(private var service: CharacterApiService) {
 
     fun fetchCharacters(): Flow<PagingData<RickAndMortyCharacters>> {
         return Pager(config = PagingConfig(
@@ -21,9 +21,8 @@ class CharacterRepository constructor(var service: CharacterApiService) {
         }).flow
     }
 
-
     fun getCharacterId(id: Int? = null): MutableLiveData<RickAndMortyCharacters> {
-        var character: MutableLiveData<RickAndMortyCharacters> = MutableLiveData()
+        val character: MutableLiveData<RickAndMortyCharacters> = MutableLiveData()
         service.character(id).enqueue(object : retrofit2.Callback<RickAndMortyCharacters> {
             override fun onResponse(
                 call: Call<RickAndMortyCharacters>,
@@ -35,10 +34,7 @@ class CharacterRepository constructor(var service: CharacterApiService) {
             override fun onFailure(call: Call<RickAndMortyCharacters>, t: Throwable) {
                 character.value = null
             }
-
         })
-
         return character
     }
-
 }
