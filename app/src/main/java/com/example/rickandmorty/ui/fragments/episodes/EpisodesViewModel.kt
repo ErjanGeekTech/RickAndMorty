@@ -5,8 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.rickandmorty.data.repositories.EpisodeRepository
 
-class EpisodesViewModel constructor(val repository: EpisodeRepository) : ViewModel() {
+class EpisodesViewModel constructor(private val repository: EpisodeRepository) : ViewModel() {
 
     fun fetchEpisodes() = repository.fetchEpisodes().cachedIn(viewModelScope)
-
 }
