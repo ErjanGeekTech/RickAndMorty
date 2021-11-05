@@ -10,10 +10,7 @@ import java.io.IOException
 
 private const val CHARACTER_STARTING_PAGE_INDEX = 1
 
-class LocationPagingSource(
-    private val service: LocationApiService
-) : PagingSource<Int, RickAndMortyLocations>() {
-
+class LocationPagingSource(private val service: LocationApiService) : PagingSource<Int, RickAndMortyLocations>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RickAndMortyLocations> {
         val position = params.key ?: CHARACTER_STARTING_PAGE_INDEX
