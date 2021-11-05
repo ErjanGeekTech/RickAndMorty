@@ -1,10 +1,9 @@
-package com.example.rickandmorty.data.db.daos
+package com.example.rickandmorty.data.local.db.daos
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.rickandmorty.models.RickAndMortyCharacters
 import com.example.rickandmorty.models.RickAndMortyLocations
 import java.util.ArrayList
 
