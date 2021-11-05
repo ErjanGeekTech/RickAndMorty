@@ -8,7 +8,7 @@ import com.example.rickandmorty.data.repositories.pagingSource.EpisodePagingSour
 import com.example.rickandmorty.models.RickAndMortyEpisodes
 import kotlinx.coroutines.flow.Flow
 
-class EpisodeRepository constructor(val service: EpisodeApiService) {
+class EpisodeRepository constructor(private val service: EpisodeApiService) {
 
     fun fetchEpisodes(): Flow<PagingData<RickAndMortyEpisodes>> {
         return Pager(config =
@@ -17,5 +17,4 @@ class EpisodeRepository constructor(val service: EpisodeApiService) {
                 EpisodePagingSource(service)
             }).flow
     }
-
 }
