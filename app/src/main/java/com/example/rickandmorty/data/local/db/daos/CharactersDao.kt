@@ -1,4 +1,4 @@
-package com.example.rickandmorty.data.db.daos
+package com.example.rickandmorty.data.local.db.daos
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -15,5 +15,4 @@ interface CharactersDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(characters: ArrayList<RickAndMortyCharacters>)
-
 }
