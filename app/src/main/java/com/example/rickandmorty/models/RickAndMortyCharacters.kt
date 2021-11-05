@@ -2,19 +2,21 @@ package com.example.rickandmorty.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.rickandmorty.base.IBaseDiffModel
 import com.google.gson.annotations.SerializedName
+
 @Entity
 data class RickAndMortyCharacters(
     @PrimaryKey
     @SerializedName("id")
-    var id: Int,
+    override var id: Int,
 
     @SerializedName("name")
-    var name: String,
+    val name: String,
 
     @SerializedName("status")
-    var status: String,
+    val status: String,
 
     @SerializedName("image")
-    var image: String
-)
+    val image: String
+) : IBaseDiffModel

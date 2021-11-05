@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Info(
     @SerializedName("count")
-    private var count: Int,
+    private val count: Int,
 
     @SerializedName("pages")
     private val pages: Int,
@@ -14,5 +14,4 @@ data class Info(
 
     @SerializedName("prev")
     private val prev: Any
-
     )
