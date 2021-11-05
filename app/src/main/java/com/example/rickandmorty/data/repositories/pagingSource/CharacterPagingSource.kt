@@ -11,12 +11,7 @@ import java.io.IOException
 
 private const val CHARACTER_STARTING_PAGE_INDEX = 1
 
-
-class CharacterPagingSource(
-
-    private val service: CharacterApiService,
-) : PagingSource<Int, RickAndMortyCharacters>() {
-
+class CharacterPagingSource(private val service: CharacterApiService, ) : PagingSource<Int, RickAndMortyCharacters>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RickAndMortyCharacters> {
         val position = params.key ?: CHARACTER_STARTING_PAGE_INDEX
@@ -33,7 +28,6 @@ class CharacterPagingSource(
                 prevKey = null,
                 nextKey = nextPageNumber
             )
-
         } catch (exception: IOException) {
             return LoadResult.Error(exception)
         } catch (exception: HttpException) {
