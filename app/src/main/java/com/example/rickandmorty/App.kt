@@ -1,9 +1,9 @@
 package com.example.rickandmorty
 
 import android.app.Application
-import com.example.rickandmorty.di.NetworkModule
-import com.example.rickandmorty.di.RepositoryModule
-import com.example.rickandmorty.di.VmModule
+import com.example.rickandmorty.modules.networkModule
+import com.example.rickandmorty.modules.repositoryModule
+import com.example.rickandmorty.modules.vMModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
@@ -18,13 +18,10 @@ class App : Application() {
             androidContext(this@App)
             androidLogger()
             modules(listOf(
-                VmModule,
-                RepositoryModule,
-                NetworkModule
+                vMModule,
+                repositoryModule,
+                networkModule
             ))
         }
-
     }
-
-
 }
