@@ -1,16 +1,15 @@
-package com.example.rickandmorty.ui.adapters
+package com.example.rickandmorty.presentation.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty.base.BaseDiffUtilItemCallback
 import com.example.rickandmorty.databinding.ItemLocationBinding
-import com.example.rickandmorty.models.RickAndMortyLocations
+import com.example.rickandmorty.domain.models.RickAndMortyLocation
 
-class LocationAdapter : PagingDataAdapter<RickAndMortyLocations, LocationAdapter.LocationViewHolder>(
-        BaseDiffUtilItemCallback()
+class LocationAdapter : PagingDataAdapter<RickAndMortyLocation, LocationAdapter.LocationViewHolder>(
+    BaseDiffUtilItemCallback()
 ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
@@ -26,7 +25,7 @@ class LocationAdapter : PagingDataAdapter<RickAndMortyLocations, LocationAdapter
     class LocationViewHolder(private val binding: ItemLocationBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(rickAndMortyLocations: RickAndMortyLocations) {
+        fun onBind(rickAndMortyLocations: RickAndMortyLocation) {
             binding.txtNameLocation.text = rickAndMortyLocations.name
             binding.typeLocationTxt.text = rickAndMortyLocations.type
             binding.txtDimensionLocation.text = rickAndMortyLocations.dimension

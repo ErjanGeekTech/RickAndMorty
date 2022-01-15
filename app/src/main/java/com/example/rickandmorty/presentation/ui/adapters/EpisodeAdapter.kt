@@ -1,4 +1,4 @@
-package com.example.rickandmorty.ui.adapters
+package com.example.rickandmorty.presentation.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,9 +6,9 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty.base.BaseDiffUtilItemCallback
 import com.example.rickandmorty.databinding.ItemEpisodeBinding
-import com.example.rickandmorty.models.RickAndMortyEpisodes
+import com.example.rickandmorty.domain.models.RickAndMortyEpisode
 
-class EpisodeAdapter : PagingDataAdapter<RickAndMortyEpisodes, EpisodeAdapter.EpisodeViewHolder>(
+class EpisodeAdapter : PagingDataAdapter<RickAndMortyEpisode, EpisodeAdapter.EpisodeViewHolder>(
     BaseDiffUtilItemCallback()
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
@@ -21,11 +21,12 @@ class EpisodeAdapter : PagingDataAdapter<RickAndMortyEpisodes, EpisodeAdapter.Ep
         getItem(position)?.let { holder.onBind(it) }
     }
 
-    class EpisodeViewHolder(private val binding: ItemEpisodeBinding) : RecyclerView.ViewHolder(binding.root) {
+    class EpisodeViewHolder(private val binding: ItemEpisodeBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(rickAndMortyEpisodes: RickAndMortyEpisodes) {
+        fun onBind(rickAndMortyEpisodes: RickAndMortyEpisode) {
             binding.txtNameEpisodes.text = rickAndMortyEpisodes.name
-            binding.txtAirDateEpisodes.text = rickAndMortyEpisodes.airDate
+            binding.txtAirDateEpisodes.text = rickAndMortyEpisodes.air_date
             binding.txtEpisodesEpisodes.text = rickAndMortyEpisodes.episode
             binding.txtCreatedEpisodes.text = rickAndMortyEpisodes.created
         }
