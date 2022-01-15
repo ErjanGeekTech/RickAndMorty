@@ -36,7 +36,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
     }
 
     override fun setupRequests() {
-        if (viewModel._charactersState.value == null) {
+        if (viewModel.charactersState.value == null) {
             viewModel.fetchCharacters()
         }
     }
@@ -60,7 +60,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
 
     private fun fetchCharacters() {
         if (verifyAvailableNetwork()) {
-            viewModel._charactersState.observe(viewLifecycleOwner, {
+            viewModel.charactersState.observe(viewLifecycleOwner, {
                 viewLifecycleOwner.lifecycleScope.launch {
                     characterAdapter.submitData(it)
                 }
