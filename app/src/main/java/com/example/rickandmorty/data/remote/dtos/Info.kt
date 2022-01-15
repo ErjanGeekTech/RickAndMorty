@@ -1,4 +1,4 @@
-package com.example.rickandmorty.models
+package com.example.rickandmorty.data.remote.dtos
 
 import com.google.gson.annotations.SerializedName
 
@@ -14,4 +14,4 @@ data class Info(
 
     @SerializedName("prev")
     private val prev: Any
-    )
+)
