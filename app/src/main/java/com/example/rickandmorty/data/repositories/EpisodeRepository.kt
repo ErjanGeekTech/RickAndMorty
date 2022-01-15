@@ -1,20 +1,21 @@
 package com.example.rickandmorty.data.repositories
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import com.example.rickandmorty.data.network.apiservice.EpisodeApiService
-import com.example.rickandmorty.data.repositories.pagingSource.EpisodePagingSource
-import com.example.rickandmorty.models.RickAndMortyEpisodes
+import com.example.rickandmorty.base.BaseRepository
+import com.example.rickandmorty.common.resource.Resource
+import com.example.rickandmorty.data.remote.apiservices.EpisodeApiService
+import com.example.rickandmorty.data.remote.dtos.RickAndMortyEpisodeDto
+import com.example.rickandmorty.data.remote.pagingsources.EpisodePagingSource
+import com.example.rickandmorty.domain.repositories.FirstEpisodeRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class EpisodeRepository constructor(private val service: EpisodeApiService) {
+class EpisodeRepository @Inject constructor(private val service: EpisodeApiService) :
+    BaseRepository(), FirstEpisodeRepository {
 
-    fun fetchEpisodes(): Flow<PagingData<RickAndMortyEpisodes>> {
-        return Pager(config =
-        PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = {
-                EpisodePagingSource(service)
-            }).flow
-    }
+    fun fetchEpisodes() = doPagingRequest(EpisodePagingSource(service))
+
+    override fun fetchEpisode(episode: String): Flow<Resource<RickAndMortyEpisodeDto>>  =
+        doRequest {
+            service.fetchEpisode(episode)
+        }
 }
