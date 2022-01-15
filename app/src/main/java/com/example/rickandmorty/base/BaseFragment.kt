@@ -1,15 +1,12 @@
 package com.example.rickandmorty.base
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseFragment<B :  ViewBinding, V : ViewModel>(
+abstract class BaseFragment<B :  ViewBinding, V : BaseViewModel>(
     @LayoutRes layoutId: Int
 ) : Fragment(layoutId) {
 
@@ -19,22 +16,22 @@ abstract class BaseFragment<B :  ViewBinding, V : ViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initialize()
-        setupListener()
-        setupRequests()
-        setupObserve()
         setupViews()
+        setupListeners()
+        setupRequests()
+        setupObserves()
     }
 
     open fun setupViews() {
     }
 
-    open fun setupObserve() {
+    open fun setupObserves() {
     }
 
     open fun setupRequests() {
     }
 
-    open fun setupListener() {
+    open fun setupListeners() {
     }
 
     open fun initialize() {
