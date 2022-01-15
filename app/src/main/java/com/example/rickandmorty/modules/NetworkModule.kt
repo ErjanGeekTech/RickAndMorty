@@ -1,12 +1,28 @@
 package com.example.rickandmorty.modules
 
-import com.example.rickandmorty.data.network.RetrofitClient
-import org.koin.dsl.module
+import com.example.rickandmorty.data.remote.RetrofitClient
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
 
-val networkModule = module {
-    single { RetrofitClient() }
-    single { get<RetrofitClient>().provideCharacterApiService() }
-    single { get<RetrofitClient>().provideLocationApiService() }
-    single { get<RetrofitClient>().provideEpisodeApiService() }
+    @Singleton
+    val retrofitClient = RetrofitClient()
+
+    @Singleton
+    @Provides
+    fun provideCharacterApiService() = retrofitClient.provideCharacterApiService()
+
+    @Singleton
+    @Provides
+    fun provideEpisodeService() = retrofitClient.provideEpisodeApiService()
+
+    @Singleton
+    @Provides
+    fun provideLocationApiService() = retrofitClient.provideLocationApiService()
 }
