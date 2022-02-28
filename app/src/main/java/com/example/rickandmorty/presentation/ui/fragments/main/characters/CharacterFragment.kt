@@ -3,20 +3,19 @@ package com.example.rickandmorty.presentation.ui.fragments.main.characters
 import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.alish.boilerplate.presentation.state.UIState
 import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
+import com.example.rickandmorty.common.extensions.submitData
 import com.example.rickandmorty.common.extensions.verifyAvailableNetwork
-import com.example.rickandmorty.common.resource.Resource
+import com.example.rickandmorty.resource.Resource
 import com.example.rickandmorty.databinding.FragmentCharacterBinding
 import com.example.rickandmorty.presentation.ui.adapters.CharacterAdapter
+import com.example.rickandmorty.utils.PaginationScrollListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewModel>(
@@ -31,55 +30,58 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
         setupRecycler()
     }
 
-    override fun setupListeners() {
-        setupLoadStateListener()
+    override fun setupObserves() {
+        fetchCharacters()
     }
 
     override fun setupRequests() {
-        if (viewModel.charactersState.value == null) {
+        if(characterAdapter.currentList.isEmpty()){
             viewModel.fetchCharacters()
         }
     }
 
     private fun setupRecycler() = with(binding.rv) {
-        layoutManager = LinearLayoutManager(context)
+        val linearLayoutManager = LinearLayoutManager(context)
+        layoutManager = linearLayoutManager
         adapter = characterAdapter
-    }
 
-    override fun setupObserves() {
-        fetchCharacters()
-    }
-
-    private fun setupLoadStateListener() {
-        lifecycleScope.launch {
-            characterAdapter.loadStateFlow.collectLatest { loadStates ->
-                binding.characterSon.isVisible = loadStates.refresh is LoadState.Loading
-            }
-        }
+        addOnScrollListener(object : PaginationScrollListener(linearLayoutManager, { viewModel.fetchCharacters() }) {
+            override fun isLoading() = viewModel.isLoading
+        })
     }
 
     private fun fetchCharacters() {
         if (verifyAvailableNetwork()) {
-            viewModel.charactersState.observe(viewLifecycleOwner, {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    characterAdapter.submitData(it)
+            viewModel.charactersState.subscribe {
+                when (it) {
+                    is UIState.Loading -> {
+                    }
+                    is UIState.Error -> {
+                        Log.e("anime", it.error)
+                    }
+                    is UIState.Success -> {
+                        binding.characterProgressBar.isVisible = false
+                        characterAdapter.submitData(it.data)
+                        viewModel.isLoading = false
+                    }
                 }
-            })
+            }
         }
     }
 
     private fun firstEpisode(episode: String, position: Int) {
-        viewModel.fetchEpisode(episode).observe(viewLifecycleOwner, {
+        viewModel.fetchEpisode(episode).observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Error -> Log.e("anime", it.message.toString())
 
-                is Resource.Loading -> Log.e("anime", "loading")
+                is Resource.Loading -> {
+                }
 
                 is Resource.Success -> {
                     characterAdapter.firstSeenIn(it.data?.name.toString(), position)
                 }
             }
-        })
+        }
     }
 
     private fun onItemClick(id: Int) {

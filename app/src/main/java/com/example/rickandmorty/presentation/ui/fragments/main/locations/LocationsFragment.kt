@@ -1,19 +1,17 @@
 package com.example.rickandmorty.presentation.ui.fragments.main.locations
 
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.alish.boilerplate.presentation.state.UIState
 import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
+import com.example.rickandmorty.common.extensions.submitData
 import com.example.rickandmorty.common.extensions.verifyAvailableNetwork
 import com.example.rickandmorty.databinding.FragmentLocationsBinding
 import com.example.rickandmorty.presentation.ui.adapters.LocationAdapter
+import com.example.rickandmorty.utils.PaginationScrollListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LocationsFragment : BaseFragment<FragmentLocationsBinding, LocationsViewModel>(
@@ -29,31 +27,45 @@ class LocationsFragment : BaseFragment<FragmentLocationsBinding, LocationsViewMo
     }
 
     private fun setupRecycler() = with(binding.rv) {
-        layoutManager = LinearLayoutManager(context)
+        val linearLayoutManager = LinearLayoutManager(context)
+        layoutManager = linearLayoutManager
         adapter = locationAdapter
+
+        addOnScrollListener(object :
+            PaginationScrollListener(linearLayoutManager, { viewModel.fetchLocations() }) {
+            override fun isLoading() = viewModel.isLoading
+        })
     }
 
     override fun setupRequests() {
+        if (locationAdapter.currentList.isEmpty()) viewModel.fetchLocations()
+    }
+
+    override fun setupObserves() {
         fetchLocations()
-    }
-
-    override fun setupListeners() {
-        setupLoadStateListener()
-    }
-
-    private fun setupLoadStateListener() {
-        lifecycleScope.launch {
-            locationAdapter.loadStateFlow.collectLatest { loadStates ->
-                binding.locationsProgressBar.isVisible = loadStates.refresh is LoadState.Loading
-            }
-        }
     }
 
     private fun fetchLocations() {
         if (verifyAvailableNetwork()) {
-            lifecycleScope.launch {
-                viewModel.fetchLocations().collectLatest(locationAdapter::submitData)
+            viewModel.locationState.subscribe {
+                when (it) {
+                    is UIState.Loading -> {
+
+                    }
+                    is UIState.Error -> {
+
+                    }
+                    is UIState.Success -> {
+                        locationAdapter.submitData(it.data)
+                        viewModel.isLoading = false
+                    }
+                }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.page = 1
     }
 }

@@ -1,19 +1,19 @@
 package com.example.rickandmorty.presentation.ui.fragments.main.episodes
 
+import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.alish.boilerplate.presentation.state.UIState
 import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
+import com.example.rickandmorty.common.extensions.submitData
 import com.example.rickandmorty.common.extensions.verifyAvailableNetwork
 import com.example.rickandmorty.databinding.FragmentEpisodesBinding
 import com.example.rickandmorty.presentation.ui.adapters.EpisodeAdapter
+import com.example.rickandmorty.utils.PaginationScrollListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EpisodesFragment : BaseFragment<FragmentEpisodesBinding, EpisodesViewModel>(
@@ -28,32 +28,46 @@ class EpisodesFragment : BaseFragment<FragmentEpisodesBinding, EpisodesViewModel
         setupRecycler()
     }
 
-    override fun setupListeners() {
-        setupLoadStateListener()
+    override fun setupRequests() {
+        if (episodeAdapter.currentList.isEmpty()) viewModel.fetchEpisodes()
     }
 
-    override fun setupRequests() {
-        fetchLocations()
+    override fun setupObserves() {
+        fetchEpisodes()
     }
 
     private fun setupRecycler() = with(binding.rv) {
-        layoutManager = LinearLayoutManager(context)
+        val linearLayoutManager = LinearLayoutManager(context)
+        layoutManager = linearLayoutManager
         adapter = episodeAdapter
+
+        addOnScrollListener(object : PaginationScrollListener(linearLayoutManager, { viewModel.fetchEpisodes() }) {
+            override fun isLoading() = viewModel.isLoading
+        })
     }
 
-    private fun setupLoadStateListener() {
-        lifecycleScope.launch {
-            episodeAdapter.loadStateFlow.collectLatest { loadStates ->
-                binding.episodesProgressBar.isVisible = loadStates.refresh is LoadState.Loading
-            }
-        }
-    }
-
-    private fun fetchLocations() {
+    private fun fetchEpisodes() {
         if (verifyAvailableNetwork()) {
-            lifecycleScope.launch {
-                viewModel.fetchEpisodes().collectLatest(episodeAdapter::submitData)
+            viewModel.episodesState.subscribe {
+                when (it) {
+                    is UIState.Loading -> {
+
+                    }
+                    is UIState.Error -> {
+                        Log.e("anime", it.error)
+                    }
+                    is UIState.Success -> {
+                        binding.episodesProgressBar.isVisible = false
+                        episodeAdapter.submitData(it.data)
+                        viewModel.isLoading = false
+                    }
+                }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.page = 1
     }
 }

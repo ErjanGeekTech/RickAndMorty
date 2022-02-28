@@ -26,7 +26,7 @@ class CharacterDetailFragment : BaseFragment<FragmentDescriptionBinding, Charact
 
     override fun setupObserves() = with(binding) {
         if (verifyAvailableNetwork()) {
-            viewModel.characterState.observe(viewLifecycleOwner, {
+            viewModel.characterState.subscribe {
                 when (it) {
                     is UIState.Error -> Log.e("anime", it.error)
 
@@ -34,12 +34,13 @@ class CharacterDetailFragment : BaseFragment<FragmentDescriptionBinding, Charact
 
                     is UIState.Success -> {
                         it.data.let { data ->
-                            imageDescription.setImage(data.image)
-                            textNameDescription.text = data.name
+                            mainBackdrop.setImage(data.image)
+                            name.text = data.name
+                            gender.text = data.gender
                         }
                     }
                 }
-            })
+            }
         }
     }
 }

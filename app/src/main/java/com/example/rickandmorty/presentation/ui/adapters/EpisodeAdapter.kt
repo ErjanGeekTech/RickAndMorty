@@ -2,13 +2,13 @@ package com.example.rickandmorty.presentation.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty.base.BaseDiffUtilItemCallback
 import com.example.rickandmorty.databinding.ItemEpisodeBinding
-import com.example.rickandmorty.domain.models.RickAndMortyEpisode
+import com.example.rickandmorty.presentation.models.RickAndMortyEpisodeUI
 
-class EpisodeAdapter : PagingDataAdapter<RickAndMortyEpisode, EpisodeAdapter.EpisodeViewHolder>(
+class EpisodeAdapter : ListAdapter<RickAndMortyEpisodeUI, EpisodeAdapter.EpisodeViewHolder>(
     BaseDiffUtilItemCallback()
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeViewHolder {
@@ -24,7 +24,7 @@ class EpisodeAdapter : PagingDataAdapter<RickAndMortyEpisode, EpisodeAdapter.Epi
     class EpisodeViewHolder(private val binding: ItemEpisodeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(rickAndMortyEpisodes: RickAndMortyEpisode) {
+        fun onBind(rickAndMortyEpisodes: RickAndMortyEpisodeUI) {
             binding.txtNameEpisodes.text = rickAndMortyEpisodes.name
             binding.txtAirDateEpisodes.text = rickAndMortyEpisodes.air_date
             binding.txtEpisodesEpisodes.text = rickAndMortyEpisodes.episode

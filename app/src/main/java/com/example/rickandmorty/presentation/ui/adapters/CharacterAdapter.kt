@@ -3,20 +3,20 @@ package com.example.rickandmorty.presentation.ui.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseDiffUtilItemCallback
 import com.example.rickandmorty.common.extensions.capitalized
 import com.example.rickandmorty.common.extensions.setImage
 import com.example.rickandmorty.databinding.ItemCharacterBinding
-import com.example.rickandmorty.domain.models.RickAndMortyCharacter
+import com.example.rickandmorty.presentation.models.RickAndMortyCharacterUI
 
 class CharacterAdapter(
     val onItemClick: (id: Int) -> Unit,
     val doRequestEpisode: (episode: String, position: Int) -> Unit
 ) :
-    PagingDataAdapter<RickAndMortyCharacter, CharacterAdapter.CharacterViewHolder>(
+    ListAdapter<RickAndMortyCharacterUI, CharacterAdapter.CharacterViewHolder>(
         BaseDiffUtilItemCallback()
     ) {
 
@@ -44,7 +44,7 @@ class CharacterAdapter(
             }
         }
 
-        fun onBind(rickAndMortyCharacters: RickAndMortyCharacter) = with(binding) {
+        fun onBind(rickAndMortyCharacters: RickAndMortyCharacterUI) = with(binding) {
             imageItemCharacter.setImage(rickAndMortyCharacters.image)
             nameCharacter.text = rickAndMortyCharacters.name
             when (rickAndMortyCharacters.status) {

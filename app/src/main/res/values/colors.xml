@@ -13,5 +13,10 @@
     <color name="toolbar_color">#161A20</color>
     <color name="item_color_focused">#ff9800</color>
     <color name="background_rick_and_morty">#232932</color>
+
+    <!-- dimensions -->
+    <dimen name="image_width">120dp</dimen>
+    <dimen name="image_final_width">32dp</dimen>
+    <dimen name="spacing_normal">16dp</dimen>
 </resources>
 

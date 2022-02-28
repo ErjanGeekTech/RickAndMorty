@@ -7,6 +7,8 @@
     android:background="@color/background_rick_and_morty"
     tools:context=".presentation.ui.fragments.main.characters.CharacterFragment">
 
+
+
    <androidx.recyclerview.widget.RecyclerView
        app:layout_constraintTop_toTopOf="parent"
        app:layout_constraintBottom_toBottomOf="parent"
@@ -16,8 +18,7 @@
        android:layout_height="0dp"/>
 
    <ProgressBar
-       android:id="@+id/character_son"
-       android:visibility="gone"
+       android:id="@+id/character_progress_bar"
        app:layout_constraintStart_toStartOf ="parent"
        app:layout_constraintTop_toTopOf="parent"
        app:layout_constraintBottom_toBottomOf="parent"
