@@ -1,7 +1,5 @@
 package com.example.rickandmorty.presentation.ui.fragments.main.characters.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.alish.boilerplate.presentation.state.UIState
 import com.example.rickandmorty.base.BaseViewModel
 import com.example.rickandmorty.domain.usecases.DetailCharacterUseCase

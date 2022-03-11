@@ -8,8 +8,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.alish.boilerplate.presentation.state.UIState
 import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
+import com.example.rickandmorty.common.extensions.isConnectedOrConnecting
 import com.example.rickandmorty.common.extensions.submitData
-import com.example.rickandmorty.common.extensions.verifyAvailableNetwork
 import com.example.rickandmorty.databinding.FragmentEpisodesBinding
 import com.example.rickandmorty.presentation.ui.adapters.EpisodeAdapter
 import com.example.rickandmorty.utils.PaginationScrollListener
@@ -47,7 +47,7 @@ class EpisodesFragment : BaseFragment<FragmentEpisodesBinding, EpisodesViewModel
     }
 
     private fun fetchEpisodes() {
-        if (verifyAvailableNetwork()) {
+        if (isConnectedOrConnecting()) {
             viewModel.episodesState.subscribe {
                 when (it) {
                     is UIState.Loading -> {

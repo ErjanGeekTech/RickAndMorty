@@ -9,8 +9,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.alish.boilerplate.presentation.state.UIState
 import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
-import com.example.rickandmorty.common.extensions.submitData
-import com.example.rickandmorty.common.extensions.verifyAvailableNetwork
+import com.example.rickandmorty.common.extensions.*
 import com.example.rickandmorty.resource.Resource
 import com.example.rickandmorty.databinding.FragmentCharacterBinding
 import com.example.rickandmorty.presentation.ui.adapters.CharacterAdapter
@@ -35,9 +34,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
     }
 
     override fun setupRequests() {
-        if(characterAdapter.currentList.isEmpty()){
-            viewModel.fetchCharacters()
-        }
+        if (characterAdapter.currentList.isEmpty()) viewModel.fetchCharacters()
     }
 
     private fun setupRecycler() = with(binding.rv) {
@@ -45,13 +42,14 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
         layoutManager = linearLayoutManager
         adapter = characterAdapter
 
-        addOnScrollListener(object : PaginationScrollListener(linearLayoutManager, { viewModel.fetchCharacters() }) {
+        addOnScrollListener(object :
+            PaginationScrollListener(linearLayoutManager, { viewModel.fetchCharacters() }) {
             override fun isLoading() = viewModel.isLoading
         })
     }
 
     private fun fetchCharacters() {
-        if (verifyAvailableNetwork()) {
+        if (isConnectedOrConnecting()) {
             viewModel.charactersState.subscribe {
                 when (it) {
                     is UIState.Loading -> {
@@ -85,7 +83,7 @@ class CharacterFragment : BaseFragment<FragmentCharacterBinding, CharacterViewMo
     }
 
     private fun onItemClick(id: Int) {
-        findNavController().navigate(
+        findNavController().navigateSafely(
             CharacterFragmentDirections.actionCharacterFragmentToCharacterDetailFragment(id)
         )
     }

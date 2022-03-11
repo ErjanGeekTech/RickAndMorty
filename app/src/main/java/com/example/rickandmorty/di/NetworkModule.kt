@@ -1,5 +1,7 @@
 package com.example.rickandmorty.di
 
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import com.example.rickandmorty.data.remote.RetrofitClient
 import dagger.Module
 import dagger.Provides
@@ -25,4 +27,12 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideLocationApiService() = retrofitClient.provideLocationApiService()
+
+    @Singleton
+    @Provides
+    fun provideNetworkRequestClient(): NetworkRequest = NetworkRequest.Builder()
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+        .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+        .build()
 }

@@ -6,6 +6,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.alish.boilerplate.presentation.state.UIState
 import com.example.rickandmorty.R
 import com.example.rickandmorty.base.BaseFragment
+import com.example.rickandmorty.common.extensions.isConnectedOrConnecting
 import com.example.rickandmorty.common.extensions.submitData
 import com.example.rickandmorty.common.extensions.verifyAvailableNetwork
 import com.example.rickandmorty.databinding.FragmentLocationsBinding
@@ -46,7 +47,7 @@ class LocationsFragment : BaseFragment<FragmentLocationsBinding, LocationsViewMo
     }
 
     private fun fetchLocations() {
-        if (verifyAvailableNetwork()) {
+        if (isConnectedOrConnecting()) {
             viewModel.locationState.subscribe {
                 when (it) {
                     is UIState.Loading -> {

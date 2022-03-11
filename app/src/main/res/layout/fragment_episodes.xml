@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_rick_and_morty"
-    tools:context=".presentation.ui.fragments.main.episodes.EpisodesFragment">
+    tools:context=".presentation.ui.fragments.main.episodes.EpisodesFragment"
+    >
 
     <androidx.recyclerview.widget.RecyclerView
         app:layout_constraintTop_toTopOf="parent"
